@@ -216,5 +216,5 @@ $ echo $NAME
 
 $
 Authors ✒️
-Idris Ibraheem|| Github | Twitter | email
+Idris Ibraheem O. || Github | Twitter | email
 Nimat Jinadu || Github | Twitter | email
