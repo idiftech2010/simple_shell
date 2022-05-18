@@ -1,39 +1,61 @@
-#ifndef _SHELL_
-#define _SHELL_
+#ifndef SHELL_H
+#define SHELL_H
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
+#include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <signal.h>
-#include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <time.h>
+#include <stdbool.h>
 
+/* environment variables */
 extern char **environ;
+extern __sighandler_t signal(int __sig, __sighandler_t __handler);
 
-char *_strcat(char *dest, char *src);
-int _strlen(const char *s);
+/* handle built ins */
+int checker(char **cmd, char *buf);
+void prompt_user(void);
+void handle_signal(int m);
+char **tokenizer(char *line);
+char *test_path(char **path, char *command);
+char *append_path(char *path, char *command);
+int handle_builtin(char **command, char *line);
+void exit_cmd(char **command, char *line);
+
+void print_env(void);
+
+/* string handlers */
 int _strcmp(char *s1, char *s2);
-int _strncmp(const char *s1, const char *s2, size_t len);
-char *_strdup(char *str);
-int _atoi(char *s);
-int _putchar(char c);
-void _puts(char *str);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-int count_input(char *str);
-int count_delims(char *str, char *del);
-char *remove_new_line(char *str);
-void signal_handler(int sig_id);
-void _open_help(void);
-void _print_env(void);
-void _handle_exit(char **u_tokns, char *line);
-int execBuiltInCommands(char **u_tokns, char *line);
-void frees_get_env(char *env_path);
-void frees_tokens(char **tokns);
-int exec(char *cname, char **opts);
-char *_getenv(const char *name);
-char **tokenize(char *str, char *del, int len);
-char *find(char *cname);
+int _strlen(char *s);
+int _strncmp(char *s1, char *s2, int n);
+char *_strdup(char *s);
+char *_strchr(char *s, char c);
 
-#endif
+void execution(char *cp, char **cmd);
+char *find_path(void);
+
+/* helper function for efficient free */
+void free_buffers(char **buf);
+
+struct builtin
+{
+	char *env;
+	char *exit;
+} builtin;
+
+struct info
+{
+	int final_exit;
+	int ln_count;
+} info;
+
+struct flags
+{
+	bool interactive;
+} flags;
+
+#endif /* SHELL_H */
